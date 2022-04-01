@@ -26,8 +26,8 @@ module "rke" {
 
 }
 
-module "cockroachdb" {
-  source     = "./modules/cockroachdb"
+module "dependencies" {
+  source     = "./modules/dependencies"
 
   rke_k8s = {
     host                   = module.rke.kubeconfig_api_server_url
@@ -37,3 +37,15 @@ module "cockroachdb" {
   }
 
 }
+
+module "cockroachdb" {
+  source     = "./modules/cockroachdb"
+
+  rke_k8s = {
+    host                   = module.rke.kubeconfig_api_server_url
+    client_certificate     = module.rke.kubeconfig_client_cert
+    client_key             = module.rke.kubeconfig_client_key
+    cluster_ca_certificate = module.rke.kubeconfig_ca_crt
+  }
+}
+
