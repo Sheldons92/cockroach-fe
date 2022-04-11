@@ -69,37 +69,42 @@ Deployment Complete!
 First we need to deploy a Pod with the CockroachDB SQL Client installed
 
 ```
-1. kubectl apply -f task-manifests/client-secure-operator.yaml
+kubectl apply -f task-manifests/client-secure-operator.yaml
 ```
 
 Now exec in to the pod and connect to the DB via the Kubernetes Service
 
 ```
-2. kubectl exec -it cockroachdb-client-secure \
+kubectl exec -it cockroachdb-client-secure \
 -- ./cockroach sql \
 --certs-dir=/cockroach/cockroach-certs \
 --host=cockroachdb-public
-
-cockroachdb-public
-#
-# Welcome to the CockroachDB SQL shell.
-# All statements must be terminated by a semicolon.
-# To exit, type: \q.
-#
-# Client version: CockroachDB CCL v21.2.8 (x86_64-unknown-linux-gnu, built 2022/04/05 01:47:17, go1.16.6)
-# Server version: CockroachDB CCL v21.2.5 (x86_64-unknown-linux-gnu, built 2022/02/07 21:01:07, go1.16.6)
-
-warning: server version older than client! proceed with caution; some features may not be available.
-
-# Cluster ID: cc38b09c-5f2f-4fa1-823f-66046b8ba549
-#
-# Enter \? for a brief introduction.
-#
-root@cockroachdb-public:26257/defaultdb>
+```
+Create the database
 
 ```
+CREATE DATABASE bank;
+```
+```
+CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+```
+```
+INSERT INTO bank.accounts VALUES (1, 1000.50);
+```
+```
+SELECT * FROM bank.accounts;
+```
 
+Create a user with a password
 
+```
+CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
+```
+
+Exit the SQL Client
+```
+\q
+```
 
 ## Running a test workload
 
