@@ -17,7 +17,7 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 - AWS EBS CSI Driver (For GP3 Storage)
 
 
-## Instructions
+## Deployment Instructions
 
 Deploy the infrastructue
 
@@ -62,6 +62,46 @@ cockroachdb-0                                1/1     Running   0          45m
 cockroachdb-1                                1/1     Running   0          45m
 cockroachdb-2                                1/1     Running   0          45m
 ```
+Deployment Complete!
+
+## Database Creation
+
+First we need to deploy a Pod with the CockroachDB SQL Client installed
+
+```
+1. kubectl apply -f task-manifests/client-secure-operator.yaml
+```
+
+Now exec in to the pod and connect to the DB via the Kubernetes Service
+
+```
+2. kubectl exec -it cockroachdb-client-secure \
+-- ./cockroach sql \
+--certs-dir=/cockroach/cockroach-certs \
+--host=cockroachdb-public
+
+cockroachdb-public
+#
+# Welcome to the CockroachDB SQL shell.
+# All statements must be terminated by a semicolon.
+# To exit, type: \q.
+#
+# Client version: CockroachDB CCL v21.2.8 (x86_64-unknown-linux-gnu, built 2022/04/05 01:47:17, go1.16.6)
+# Server version: CockroachDB CCL v21.2.5 (x86_64-unknown-linux-gnu, built 2022/02/07 21:01:07, go1.16.6)
+
+warning: server version older than client! proceed with caution; some features may not be available.
+
+# Cluster ID: cc38b09c-5f2f-4fa1-823f-66046b8ba549
+#
+# Enter \? for a brief introduction.
+#
+root@cockroachdb-public:26257/defaultdb>
+
+```
+
+
+
+## Running a test workload
 
 # Sales Engineer Take-Home Exercise Instructions
 v2.0
