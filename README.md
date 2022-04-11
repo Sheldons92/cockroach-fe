@@ -20,13 +20,18 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 
 ## Instructions
 
+Deploy the infrastructue
+
 ```
 1. Terraform apply -auto-approve
 ```
+Configure Kubectl to point to the K8s cluster
 
 ```
 2. export KUBECONFIG=kube_config_cluster.yml
 ```
+
+Deploy the CRDB CRD's
 
 ```
 3. kubectl apply -f operator-manifests/crds.yaml
