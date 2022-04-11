@@ -1,4 +1,33 @@
-# Sales Engineer Take-Home Exercise
+# Sales Engineer Take-Home Exercise 
+
+This is my code repository for the Sales Engineer Take-Home Exercise, this includes all of the below pre-requisite code for deploying and configuring the infrastrucutre for hosting CockroachDB
+
+## Pre-Requisites
+
+- Terraform CLI
+- AWS Account with IAM Instance profile for RKE/Rancher permissions
+- Helm CLI
+- Cockroach CLI
+
+## Code
+
+### Automated
+- 3 Node Kubernetes Cluster (Includes provisioning of VMs)
+- Network LoadBalancer (For Ingress)
+- Cert-Manager (For Ingress)
+- AWS EBS CSI Driver (For GP3 Storage)
+
+### None Automated
+
+- Self Signed Certificates (Cockroach Self signer didn't work)
+- Custom Values.yaml
+
+## Instructions
+
+``` 1. Terraform apply -auto-approve```
+
+
+# Sales Engineer Take-Home Exercise Instructions
 v2.0
 
 Thank you for being interested in a position at Cockroach Labs!  As a part of our interview process, we like to have candidates get their hands dirty with the product.  This allows you to get a feel for what it’s like to work with our platform, and it gives us an opportunity to determine where best you will fit in the organization.
