@@ -20,11 +20,22 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 
 ## Instructions
 
-``` 1. Terraform apply -auto-approve```
-``` 2. export KUBECONFIG=kube_config_cluster.yml```
-``` 3. kubectl apply -f operator-manifests/crds.yaml```
+```
+1. Terraform apply -auto-approve
+```
+
+```
+2. export KUBECONFIG=kube_config_cluster.yml
+```
+
+```
+3. kubectl apply -f operator-manifests/crds.yaml
+```
+
 ``` 4. kubectl apply -f operator-manifests/operator.yaml```
+
 ``` 5. kubectl config set-context --current --namespace=cockroach-operator-system```
+
 ``` 6. kubectl apply kubectl apply -f operator-manifests/example.yaml```
 
 
