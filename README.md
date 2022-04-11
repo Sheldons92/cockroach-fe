@@ -39,15 +39,21 @@ Deploy the CRDB CRD's
 
 Deploy the CockroachDB operator
 
-``` 4. kubectl apply -f operator-manifests/operator.yaml```
+```
+4. kubectl apply -f operator-manifests/operator.yaml
+```
 
 Set current namespace to cockroach-operator-system
 
-``` 5. kubectl config set-context --current --namespace=cockroach-operator-system```
+```
+5. kubectl config set-context --current --namespace=cockroach-operator-system
+```
 
 Deploy CockroachDB Cluster (With TLS Ingress enabled)
 
-``` 6. kubectl apply kubectl apply -f operator-manifests/example.yaml```
+```
+6. kubectl apply kubectl apply -f operator-manifests/example.yaml
+```
 
 
 
