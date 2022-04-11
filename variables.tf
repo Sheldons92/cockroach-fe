@@ -7,7 +7,7 @@ variable clusterid {
 }
 
 variable kubernetes_version {
-  default = "v1.21.9-rancher1-1"
+  default = "v1.19.16-rancher1-4"
 }
 
 variable aws_access_key {
@@ -52,8 +52,4 @@ variable route53_zone {
 
 variable deploy_lb {
 default  = "false"
-}
-
-variable bootstrapPassword {
-default = "ThisIsASuperSafePassword!"
 }
