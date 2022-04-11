@@ -48,6 +48,17 @@ spec:
   nodes: 3
   additionalLabels:
     crdb: is-cool
+
+  ingress:
+    ui:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      host: db.k8s.ds.ps.rancher.space
+      tls:
+        - hosts:
+            - db.k8s.ds.ps.rancher.space
+          secretName: cockroach-ing-tls
   # affinity is a new API field that is behind a feature gate that is
   # disabled by default.  To enable please see the operator.yaml file.
 
