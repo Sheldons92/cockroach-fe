@@ -6,8 +6,7 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 
 - Terraform CLI
 - AWS Account with IAM Instance profile for RKE/Rancher permissions
-- Helm CLI
-- Cockroach CLI
+- Kubectl
 
 ## Code
 
