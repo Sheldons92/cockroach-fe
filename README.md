@@ -17,14 +17,16 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 - Cert-Manager (For Ingress)
 - AWS EBS CSI Driver (For GP3 Storage)
 
-### None Automated
-
-- Self Signed Certificates (Cockroach Self signer didn't work)
-- Custom Values.yaml
 
 ## Instructions
 
 ``` 1. Terraform apply -auto-approve```
+``` 2. export KUBECONFIG=kube_config_cluster.yml```
+``` 3. kubectl apply -f operator-manifests/crds.yaml```
+``` 4. kubectl apply -f operator-manifests/operator.yaml```
+``` 5. kubectl config set-context --current --namespace=cockroach-operator-system```
+``` 6. kubectl apply kubectl apply -f operator-manifests/example.yaml```
+
 
 
 # Sales Engineer Take-Home Exercise Instructions
