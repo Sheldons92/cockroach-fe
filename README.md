@@ -1,6 +1,8 @@
 # Sales Engineer Take-Home Exercise 
 
-This is my code repository for the Sales Engineer Take-Home Exercise, this includes all of the below pre-requisite code for deploying and configuring the infrastrucutre for hosting CockroachDB
+This is my code repository for the Sales Engineer Take-Home Exercise, this includes all of the below pre-requisite code for deploying and configuring the infrastrucutre for hosting CockroachDB.
+
+The Terraform will provision 3 EC2 instances, deploy a Network Loadbalancer, deploy a 3 node RKE Cluster, create a kubeconfig file, deploy the AWS EBS CSI Driver to enable persistant storage using GP3, deploy CertManager and finally create a Cluster Issuer for LetsEncrypt certificates.
 
 ## Pre-Requisites
 
