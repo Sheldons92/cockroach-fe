@@ -108,6 +108,19 @@ Exit the SQL Client
 
 ## Running a test workload
 
+As I am using Kubernetes I will use the Service Hostname of Cockroach within the cluster which will act as the LoadBalancer for this exercise.
+
+```
+kubectl get svc
+
+NAME                                 TYPE           CLUSTER-IP     EXTERNAL-IP                                                               PORT(S)                                          AGE
+cockroach-operator-webhook-service   ClusterIP      10.43.57.229   <none>                                                                    443/TCP                                          72m
+cockroachdb                          ClusterIP      None           <none>                                                                    26258/TCP,8080/TCP,26257/TCP                     59m
+cockroachdb-public                   ClusterIP      10.43.72.199   <none>                                                                    26258/TCP,8080/TCP,26257/TCP                     59m
+```
+
+
+
 # Sales Engineer Take-Home Exercise Instructions
 v2.0
 
