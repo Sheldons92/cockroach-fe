@@ -54,8 +54,14 @@ Deploy CockroachDB Cluster (With TLS Ingress enabled)
 ```
 6. kubectl apply kubectl apply -f operator-manifests/example.yaml
 ```
-
-
+Verify Cluster Deployed Successfully
+```7. :~/.c9/git/cockroach-fe $ kubectl get pods
+NAME                                         READY   STATUS    RESTARTS   AGE
+cockroach-operator-manager-8db7c4d44-xzhlx   1/1     Running   0          58m
+cockroachdb-0                                1/1     Running   0          45m
+cockroachdb-1                                1/1     Running   0          45m
+cockroachdb-2                                1/1     Running   0          45m
+```
 
 # Sales Engineer Take-Home Exercise Instructions
 v2.0
