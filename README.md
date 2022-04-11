@@ -13,8 +13,8 @@ This is my code repository for the Sales Engineer Take-Home Exercise, this inclu
 
 ### Automated
 - 3 Node Kubernetes Cluster (Includes provisioning of VMs)
-- Network LoadBalancer (For Ingress)
-- Cert-Manager (For Ingress)
+- Network LoadBalancer (For Ingress - Not Used)
+- Cert-Manager with Lets-Encrypt Issuer (For Ingress - Not Used)
 - AWS EBS CSI Driver (For GP3 Storage)
 
 
