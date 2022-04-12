@@ -135,9 +135,12 @@ cockroachdb-public                   ClusterIP      10.43.72.199   <none>       
 kubectl exec -it cockroachdb-client-secure -- ./cockroach workload init bank \
 'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
 ```
+
+Tolerate errors flag will prevent errors from stopping the tests from running.
 ```
 kubectl exec -it cockroachdb-client-secure -- ./cockroach workload run bank \
 --duration=60m \
+--tolerate-errors \
 'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
 ```
 
@@ -146,6 +149,17 @@ Scalling test - As I am using the operator I must edit the operator.yaml and re-
 ```
 kubectl apply -f operator-manifests/example-scaled-up.yaml
 ```
+
+Observations: The total node count within the UI went from 3 to 4 which was to be expected when brining in an additional node, it starts off with 0 replicas which is also to be expected. When obersving the Metrics page some more interesting things were noticeable, the P99 latency had increased by a few milliseconds and the general performance had gone down in the SQL statements chart, which over time the performance started to come back to higher levels. My assumption is this initial impact to performance is based on replicating the data across the nodes and sorting everything out.
+
+![Alt text](images/overview-scaled-up.jpg?raw=true "CockroachDB")  ![Alt text](images/metrics-scaled-up.jpg?raw=true "CockroachDB")
+
+
+graceful remove
+
+
+sh-4.4$ cockroach node decommission 4 --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-3.cockroachdb.cockroach-operator-system:26258
+
 
 ## Exercise Findings
 
