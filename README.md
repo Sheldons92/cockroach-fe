@@ -145,6 +145,14 @@ Scalling test - As I am using the operator I must edit the operator.yaml and re-
 kubectl apply -f operator-manifests/example-scaled-up.yaml
 ```
 
+## Exercise Findings
+
+## Additional Lessons Learnt
+
+1. The Helm Chart deployment method doesn't work (At least for me) The self signer runs but doesn't create the root ca/keys for authenticating, documents still tell you to deploy client-secure which generates a k8s CSR which then doesn't match up for the root user. x509 error. Bringing your own certs, although the docs say when enabled will stop the init container, it didn't so I ended up with 2 lots of certs and the DB initialised with the wrong ones. 
+2. Cockroach Workload command, always demands password auth even when certs dir is in place and sslmode require is set.
+
+
 # Sales Engineer Take-Home Exercise Instructions
 v2.0
 
