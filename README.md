@@ -144,8 +144,9 @@ kubectl exec -it cockroachdb-client-secure -- ./cockroach workload run bank \
 'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
 ```
 
+### Exercises
 
-Scalling test - As I am using the operator I must edit the operator.yaml and re-apply it rather than kubectl scale. (kubectl patch could possibly be used here)
+Scalling test (Attach a 4th Node to the cluster) - As I am using the operator I must edit the operator.yaml and re-apply it rather than kubectl scale. (kubectl patch could possibly be used here)
 ```
 kubectl apply -f operator-manifests/example-scaled-up.yaml
 ```
@@ -155,15 +156,26 @@ Observations: The total node count within the UI went from 3 to 4 which was to b
 ![Alt text](images/overview-scaled-up.jpg?raw=true "CockroachDB")  ![Alt text](images/metrics-scaled-up.jpg?raw=true "CockroachDB")
 
 
-graceful remove
+Gracefully remove a node from the cluster
 
 
 sh-4.4$ cockroach node decommission 4 --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-3.cockroachdb.cockroach-operator-system:26258
 
+INSERT OBSERVATION HERE
 
-## Exercise Findings
+Forcibly remove a node from the cluster (think kill -9) and see how the system behaves (watch for 5 minutes)
 
-## Additional Lessons Learnt
+INSERT OBSERVATION HERE
+
+Remove all nodes but one from the cluster
+
+As I am using the operator there is a minimum of 3 nodes set within the resource definition, so I was unable to test this via kubectl scaling, however I expect the behaviour to result in a down state or offline state as there will be no Quorum for the CockroachDB cluster.
+
+### Executing a Code Example
+
+
+## Additional Exercise Findings/Lessons Learnt
+
 
 1. The Helm Chart deployment method doesn't work (At least for me) The self signer runs but doesn't create the root ca/keys for authenticating, documents still tell you to deploy client-secure which generates a k8s CSR which then doesn't match up for the root user. x509 error. Bringing your own certs, although the docs say when enabled will stop the init container, it didn't so I ended up with 2 lots of certs and the DB initialised with the wrong ones. 
 2. Cockroach Workload command, always demands password auth even when certs dir is in place and sslmode require is set.
