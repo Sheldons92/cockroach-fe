@@ -72,9 +72,6 @@ Access the CockroachDB UI at https://db.k8s.ds.ps.rancher.space
 Deployment Complete!
 
 
-
-
-
 ## Database Creation
 
 First we need to deploy a Pod with the CockroachDB SQL Client installed
@@ -111,6 +108,8 @@ Create a user with a password
 ```
 CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ```
+```
+GRANT admin TO roach; - #I have add this in as the CLI seems to always want password auth for user root even with secure flag set and certs in right directory.
 
 Exit the SQL Client
 ```
@@ -130,7 +129,21 @@ cockroachdb                          ClusterIP      None           <none>       
 cockroachdb-public                   ClusterIP      10.43.72.199   <none>                                                                    26258/TCP,8080/TCP,26257/TCP                     59m
 ```
 
+```
+kubectl exec -it cockroachdb-client-secure -- ./cockroach workload init bank \
+'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
+```
+```
+kubectl exec -it cockroachdb-client-secure -- ./cockroach workload run bank \
+--duration=60m \
+'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
+```
 
+
+Scalling test - As I am using the operator I must edit the operator.yaml and re-apply it rather than kubectl scale. (kubectl patch could possibly be used here)
+```
+kubectl apply -f operator-manifests/example-scaled-up.yaml
+```
 
 # Sales Engineer Take-Home Exercise Instructions
 v2.0
