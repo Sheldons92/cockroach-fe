@@ -144,6 +144,7 @@ kubectl exec -it cockroachdb-client-secure -- ./cockroach workload run bank \
 'postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257'
 ```
 
+
 ### Exercises
 
 Scalling test (Attach a 4th Node to the cluster) - As I am using the operator I must edit the operator.yaml and re-apply it rather than kubectl scale. (kubectl patch could possibly be used here)
@@ -153,25 +154,80 @@ kubectl apply -f operator-manifests/example-scaled-up.yaml
 
 Observations: The total node count within the UI went from 3 to 4 which was to be expected when brining in an additional node, it starts off with 0 replicas which is also to be expected. When obersving the Metrics page some more interesting things were noticeable, the P99 latency had increased by a few milliseconds and the general performance had gone down in the SQL statements chart, which over time the performance started to come back to higher levels. My assumption is this initial impact to performance is based on replicating the data across the nodes and sorting everything out.
 
-![Alt text](images/overview-scaled-up.jpg?raw=true "CockroachDB")  ![Alt text](images/metrics-scaled-up.jpg?raw=true "CockroachDB")
+![Alt text](images/overview-scaled-up.jpg?raw=true "ScaleOverview")  ![Alt text](images/metrics-scaled-up.jpg?raw=true "ScaleMetrics")
 
 
-Gracefully remove a node from the cluster
+Gracefully remove a node from the Cluster
+
+```
+kubectl exec -it cockroachdb-client-secure -- cockroach node decommission 4 \
+--certs-dir=/cockroach/cockroach-certs \
+--host=cockroachdb-3.cockroachdb.cockroach-operator-system:26258
+```
+
+Observations: Immediately, performance hit within the Metrics page, the statuses on the left change and 1 node is in a suspect state. On the Overview page, the 4th node goes in to a decomissioning state and is eventually removed from the page & cluster. After decomissioning, the cluster performance is actually higher than it was with the 4th node in service, the P99 latency appears to be lower and the SQL statements appear to be higher, I was expecting performance to drop to the same level as when initially deployed.
+
+![Alt text](images/scale-down-1.jpg?raw=true "ScaleDown1")  ![Alt text](images/scale-down-2.jpg?raw=true "ScaleDown2")
 
 
-sh-4.4$ cockroach node decommission 4 --certs-dir=/cockroach/cockroach-certs --host=cockroachdb-3.cockroachdb.cockroach-operator-system:26258
+Forcibly remove a node from the cluster (think kill -9) and see how the system behaves compared to gracefully shutting down (watch for 5 minutes)
 
-INSERT OBSERVATION HERE
+```
+kubectl delete pods cockroachdb-2 --force --grace-period=0
+```
 
-Forcibly remove a node from the cluster (think kill -9) and see how the system behaves (watch for 5 minutes)
+Observations: Similar to gracefully terminating an instance, a suspect instance came in to the summary on the metrics page, but within 10 seconds or so the pod came back in to service and everything resumed as normal. This behaviour was expected using the operator, if I was using the standard statefulset or helm chart I could have scaled to 2. I also noticed other metrics change slightly during the recovery process such as a spike in the ranges chart.
 
-INSERT OBSERVATION HERE
+
+![Alt text](images/force-delete.jpg?raw=true "ForceDel") ![Alt text](images/ranges.jpg?raw=true "ForceDel2")
 
 Remove all nodes but one from the cluster
 
-As I am using the operator there is a minimum of 3 nodes set within the resource definition, so I was unable to test this via kubectl scaling, however I expect the behaviour to result in a down state or offline state as there will be no Quorum for the CockroachDB cluster.
+As I am using the operator there is a minimum of 3 nodes set within the resource definition, so I was unable to test this via kubectl scaling, however I was able to destructively delete 2 of the nodes at the same time
+
+```
+kubectl delete pods cockroachdb-1 cockroachdb-2
+```
+
+Obersvations, cluster went completely unresponsive for about 30 seconds, but then recovered. My expectation is that if I was able to scale the statefulset to 1 replica the database would not function as it would not be able to form quorum.
+
+![Alt text](images/1-node.jpg?raw=true "1 Node")
+
 
 ### Executing a Code Example
+
+The code example I have chosen to deploy is - https://www.cockroachlabs.com/docs/cockroachcloud/quickstart?filters=go
+
+Create a Go Pod for executing code example
+
+```
+kubectl run -i -t go-pod --image=golang --restart=Never
+```
+```
+git clone https://github.com/cockroachdb/quickstart-code-samples
+```
+```
+cd quickstart-code-samples/go
+```
+```
+```
+export DATABASE_URL="postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257"
+```
+```
+go mod init basic-sample && go mod tid
+```
+```
+go run main.go
+```
+
+![Alt text](images/hello-world.jpg?raw=true "Hello World")
+
+
+### Potential Extra Credit
+
+1. Accessible Ingress via Route53, NLB & K8s Ingress controller, certified with lets encrypt.
+2. Demonstration of IaaC knowledge
+3. K8s Deployment
 
 
 ## Additional Exercise Findings/Lessons Learnt
