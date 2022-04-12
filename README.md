@@ -108,10 +108,12 @@ Create a user with a password
 ```
 CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
 ```
+#I have add the below in as the CLI seems to always want password auth for user root even with secure flag set and certs in right directory.
 ```
-GRANT admin TO roach; - #I have add this in as the CLI seems to always want password auth for user root even with secure flag set and certs in right directory.
-
+GRANT admin TO roach;
+```
 Exit the SQL Client
+
 ```
 \q
 ```
