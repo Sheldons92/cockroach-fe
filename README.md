@@ -210,7 +210,6 @@ git clone https://github.com/cockroachdb/quickstart-code-samples
 cd quickstart-code-samples/go
 ```
 ```
-```
 export DATABASE_URL="postgresql://roach:Q7gc8rEdS@cockroachdb-public:26257"
 ```
 ```
